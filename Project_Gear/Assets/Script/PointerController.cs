@@ -1,13 +1,14 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 using System.Collections.Generic;
 
 public class PointerController : MonoBehaviour
 {
     [Header("Pointer Settings")]
     public float maxValue = 360f;   // total range
-    public float speed = 3f;        // increase per second
-    private float currentValue = 0f;
+    public float speed = 40f;        // increase per second
+    public float currentValue = 0f;
     private bool isRunning = false;
     private bool hasStopped = false;
 
@@ -23,7 +24,6 @@ public class PointerController : MonoBehaviour
         ATK,   // 攻擊
         Heal,  // 回復
         Call   // 招換
-        // future: Defense, Poison, Stun, etc.
     }
 
     [System.Serializable]
@@ -44,47 +44,85 @@ public class PointerController : MonoBehaviour
     void Start()
     {
         CalculateRanges();
-        UpdateDisplay("Press Space to Start");
+        StartCoroutine(GameLoop());
     }
 
-    void Update()
+    private IEnumerator GameLoop()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        while (true)
         {
-            if (!isRunning && !hasStopped)
-            {
-                // First press -> start
-                currentValue = 0f;
-                isRunning = true;
-                hasStopped = false;
-                UpdateDisplay("Start!");
-            }
-            else if (isRunning && !hasStopped)
-            {
-                // Second press -> stop
-                isRunning = false;
-                hasStopped = true;
-                ShowResult();
-            }
-            else if (!isRunning && hasStopped)
-            {
-                // Third press -> reset
-                ResetGame();
-            }
-        }
+            // 1. 等待 0.5 秒開始計時
+            UpdateDisplay("Get Ready...");
+            yield return new WaitForSeconds(0.5f);
 
-        if (isRunning)
-        {
-            currentValue += speed * Time.deltaTime;
-            UpdateDisplay(Mathf.RoundToInt(currentValue).ToString());
+            // 開始計時
+            currentValue = 0f;
+            isRunning = true;
+            hasStopped = false;
 
+            // 2. 計時過程
+            while (isRunning)
+            {
+                currentValue += speed * Time.deltaTime;
+                UpdateDisplay(Mathf.RoundToInt(currentValue).ToString());
+
+                if (currentValue >= maxValue)
+                {
+                    currentValue = maxValue;
+                    isRunning = false;
+                    hasStopped = true;
+                    UpdateDisplay("Miss!");
+                }
+
+                if (Input.GetKeyDown(KeyCode.Space) && !hasStopped)
+                {
+                    // 使用者按下空白鍵停下
+                    isRunning = false;
+                    hasStopped = true;
+                    ShowResult();
+
+                    // 等待 0.5 秒後繼續
+                    yield return new WaitForSeconds(0.5f);
+
+                    // 從停下的數字開始，花費 1 秒將數字跑完
+                    float startValue = currentValue;
+                    float elapsedTime = 0f;
+                    while (elapsedTime < 1f)
+                    {
+                        elapsedTime += Time.deltaTime;
+                        currentValue = Mathf.Lerp(startValue, maxValue, elapsedTime / 1f);
+                        UpdateDisplay(Mathf.RoundToInt(currentValue).ToString());
+                        yield return null;
+                    }
+
+                    currentValue = maxValue;
+                    UpdateDisplay("Finished!");
+                }
+
+                yield return null;
+            }
+
+            // 3. 若 Miss 判定，執行相同邏輯
             if (currentValue >= maxValue)
             {
+                yield return new WaitForSeconds(0.5f);
+
+                float startValue = currentValue;
+                float elapsedTime = 0f;
+                while (elapsedTime < 1f)
+                {
+                    elapsedTime += Time.deltaTime;
+                    currentValue = Mathf.Lerp(startValue, maxValue, elapsedTime / 1f);
+                    UpdateDisplay(Mathf.RoundToInt(currentValue).ToString());
+                    yield return null;
+                }
+
                 currentValue = maxValue;
-                isRunning = false;
-                hasStopped = true;
-                UpdateDisplay("Miss!");
+                UpdateDisplay("Finished!");
             }
+
+            // 4. 回到第 1 點執行
+            ResetGame();
         }
     }
 
@@ -117,7 +155,7 @@ public class PointerController : MonoBehaviour
 
         foreach (var eff in effects)
         {
-            float length = eff.count * 3f;
+            float length = eff.count;
             float start = currentStart;
             float end = currentStart + length - 1;
 

@@ -184,14 +184,15 @@ MonoBehaviour:
   maxValue: 360
   speed: 12
   displayText: {fileID: 303010580654418124}
-  pointerPrefab: {fileID: 0}
   summonOffsetY: -200
   effects:
-  - effectName: "\u56DE\u5FA9"
+  - effectType: 0
     count: 5
-    value: 0
+    value: -56
     summonSpeed: 0
-  - effectName: "\u653B\u64CA"
+    summonPrefab: {fileID: 0}
+  - effectType: 0
     count: 6
-    value: 0
+    value: 20
     summonSpeed: 0
+    summonPrefab: {fileID: 0}
