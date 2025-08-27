@@ -57,7 +57,7 @@ public class CreatRoulette : MonoBehaviour
             segmentImage.transform.localRotation = Quaternion.Euler(0, 0, -currentStartAngle);
 
             // 更新片段的起始和結束角度
-            float startAngle = currentStartAngle;
+            float startAngle = currentStartAngle; // 調整起始角度使其從頂部開始
             float endAngle = currentStartAngle + fillAmount * 360f;
             pieSegments[i] = (segmentImage, startAngle, endAngle);
 

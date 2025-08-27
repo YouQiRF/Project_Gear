@@ -17,13 +17,17 @@ public class PointerController : MonoBehaviour
 
     [Header("Prefab Settings")]
     public float summonOffsetY = -200f; // spawn position offset on Y axis
+    public GameObject roulettePrefab; // 輪盤的 Prefab
+    public Transform rouletteParent; // 輪盤的父物件
+
+    private GameObject rouletteInstance; // 輪盤的實例
 
     // Effect types (expandable in the future)
     public enum EffectType
     {
         ATK,   // 攻擊
         Heal,  // 回復
-        Call   // 招換
+        Call   // 招喚
     }
 
     [System.Serializable]
@@ -43,6 +47,17 @@ public class PointerController : MonoBehaviour
 
     void Start()
     {
+        // 呼叫輪盤 Prefab
+        if (roulettePrefab != null && rouletteParent != null)
+        {
+            rouletteInstance = Instantiate(roulettePrefab, rouletteParent);
+            CreatRoulette rouletteScript = rouletteInstance.GetComponent<CreatRoulette>();
+            if (rouletteScript != null)
+            {
+                rouletteScript.pointerController = this; // 將 PointerController 傳遞給輪盤
+            }
+        }
+
         CalculateRanges();
         StartCoroutine(GameLoop());
     }
