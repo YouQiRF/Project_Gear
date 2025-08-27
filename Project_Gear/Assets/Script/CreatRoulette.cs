@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 
 public class CreatRoulette : MonoBehaviour
 {
+    [Button("Generate Pie Chart")]
     [Header("Roulette Settings")]
     public RectTransform pointer; // 指針的 RectTransform
     public PointerController pointerController; // 指向 PointerController 腳本
