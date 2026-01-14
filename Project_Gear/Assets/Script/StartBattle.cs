@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections;
 public class StartBattle : MonoBehaviour
 {
     [Header("Player Team")]
@@ -7,8 +7,6 @@ public class StartBattle : MonoBehaviour
 
     [Header("Enemy Team")]
     public GameObject[] enemyTeam = new GameObject[3]; // 敵人隊伍，最大 3 人
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         // 初始化戰鬥

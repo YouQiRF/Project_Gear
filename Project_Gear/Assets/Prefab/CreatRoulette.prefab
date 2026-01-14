@@ -115,7 +115,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4576843810842066947}
-  - component: {fileID: 2496313240412714552}
+  - component: {fileID: 6073231819342956536}
+  - component: {fileID: 6425507070162978945}
   m_Layer: 0
   m_Name: CreatRoulette
   m_TagString: Untagged
@@ -140,7 +141,7 @@ Transform:
   - {fileID: 8413862204826644060}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2496313240412714552
+--- !u!114 &6073231819342956536
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -149,10 +150,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 5427140155086785132}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 989e584753cd17545a64a909c743d885, type: 3}
+  m_Script: {fileID: 11500000, guid: 4961f5a43281e0845be4f1a513e520a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointer: {fileID: 8413862204826644060}
-  pointerController: {fileID: 0}
-  pieSegmentPrefab: {fileID: 4151705579982150980, guid: 85ad4f3c73ad3af4ca652354f6c1c6e4, type: 3}
-  pieParent: {fileID: 12013305883348610}
+  maxHealth: 10
+  currentHealth: 10
+  chips: 10
+--- !u!114 &6425507070162978945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5427140155086785132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dd464794a52c5e42b5a35781a4f7ec2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
